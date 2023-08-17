@@ -8,6 +8,7 @@ if (isset($_GET['id'])) {
     $sql = "SELECT * FROM product_list WHERE id = '$id' AND is_active = 1";
     $res = $conn->query($sql);
     if ($res->num_rows == 0) {
+        $err = 'На жаль, такого продукту не існує.';
         header("HTTP/1.1 404 Not Found");
         include("inc/404.php");
         exit();
@@ -20,7 +21,7 @@ if (isset($_GET['id'])) {
         <a href="index.php"><i class="bi bi-arrow-left-square-fill"></i></a>
         <div class="product-detail-container">
             <div class="photo-wrapper">
-                <img src="photo/<?= $res['photo'] ?>" alt="photo of product">
+                <img src="photo/<?= $res['photo'] ?>" alt="photo of product" width="512" height="512">
             </div>
             <div class="info-details">
                 <div class="name-price">
@@ -28,9 +29,12 @@ if (isset($_GET['id'])) {
                     <h3 class="article">Артикул:<?= $res['article'] ?></h3>
                     <div class="detail-price">
                         <h2><?= $res['price'] ?> <span>₴</span></h2>
-                        <button>Залишити заявку</button>
+                        <a href="product_request.php?id=<?= $res['id'] ?>">
+                            <button>Залишити заявку</button>
+                        </a>
                     </div>
                 </div>
+                <h3><?= $res['description'] ?></h3>
             </div>
         </div>
     </div>
