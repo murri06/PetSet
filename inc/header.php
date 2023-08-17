@@ -14,16 +14,18 @@ session_start();
 <body>
 <header>
     <div class="header-wrapper">
-        <h2><a href="/petset/index.php">PetSet</a></h2>
+        <h1><a href="/petset/index.php">PetSet</a></h1>
         <div class="header-login">
-            <?php if (isset($_SESSION['admin'])): ?>
-                <a href="/petset/admin_panel.php">Admin Panel</a>
-                <a href="inc/logout.php">Logout</a>
-            <?php else: ?>
-                <a href="/petset/inc/admin.php">Admin login</a>
-            <?php endif; ?>
+            <h3>
+                <?php if (isset($_SESSION['admin'])): ?>
+                    <a href="/petset/admin_panel.php">Адмін панель </a>
+                    <a href="inc/logout.php">Вийти </a>
+                <?php else: ?>
+                    <a href="/petset/inc/admin.php">Адмін логін </a>
+                <?php endif; ?>
+            </h3>
             <?php if (isset($_SESSION['username'])): ?>
-                <h3>Welcome, <?= $_SESSION['username'] ?> <a href="inc/logout.php">Logout</a></h3>
+                <h3>Вітаємо, <?= $_SESSION['username'] ?> <a href="inc/logout.php">Вийти</a></h3>
             <?php endif; ?>
 
         </div>

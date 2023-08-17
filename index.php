@@ -56,7 +56,23 @@ $product_list = $conn->query($sql);
             </div>
         <?php else: ?>
             <div class="item-list">
-
+                <?php while ($item = $product_list->fetch_assoc()): ?>
+                    <div class="product-container">
+                        <a href="product_page.php?id=<?= $item['id'] ?>">
+                            <img height="150" width="150"
+                                 src="photo/<?= $item['photo'] ?>"
+                                 alt="img of product">
+                            <h3><?= $item['product_name'] ?>
+                                <?= $item['price'] . 'грн' ?></h3>
+                        </a>
+                        <a href="product_page.php?id=<?= $item['id'] ?>">
+                            <button>Переглянути детальніше</button>
+                        </a>
+                        <a href="product_request.php?id=<?= $item['id'] ?>">
+                            <button>Залишити заявку</button>
+                        </a>
+                    </div>
+                <?php endwhile; ?>
             </div>
         <?php endif; ?>
     </main>
