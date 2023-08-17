@@ -1,48 +1,64 @@
 <?php
-include_once 'inc/database.php'
+include 'inc/database.php';
+include 'inc/header.php';
+
+if (isset($_GET['e'])) {
+    switch ($_GET['e']) {
+        case 0:
+            $usernameErr = 'That login is occupied, please choose another!';
+            break;
+        case 1:
+            $passwordErr = 'Passwords does not matches!';
+            break;
+        case 2:
+            $success = 'Now you can login into your account!';
+            break;
+        case 3:
+            $passwordErr = 'Something went wrong, please try again later!';
+            break;
+        case 4:
+            $loginErr = 'Login and password does not match!';
+            break;
+    }
+}
+
+$sql = "SELECT * FROM product_list WHERE is_active = 1 LIMIT 0, 20";
+$product_list = $conn->query($sql);
+
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>PetSet</title>
-    <link rel="stylesheet" href="inc/style.css">
-</head>
-<body>
+    <main>
+        <?php if (!isset($_SESSION['username'])): ?>
+            <div class="login-container">
+                <div class="form-wrapper">
+                    <form action="inc/login.php" method="post">
+                        <h3>Please enter your login and password</h3>
+                        <input type="text" name="username" placeholder="login" required>
+                        <input type="password" name="password" placeholder="password" required>
+                        <?php if (isset($loginErr)) echo "<label>$loginErr</label>" ?>
+                        <button type="submit" name="login">Login</button>
+                    </form>
+                </div>
+                <div class="form-wrapper">
+                    <form action="inc/login.php" method="post">
+                        <h3>Or you can register your new account</h3>
+                        <input type="text" name="username" placeholder="login" required>
+                        <?php if (isset($usernameErr)) echo "<label>$usernameErr</label>" ?>
+                        <input type="password" name="password" placeholder="password" required>
 
-<header>
-
-</header>
-
-<main>
-    <?php if (!isset($_SESSION['username'])): ?>
-        <div class="login-container">
-            <div class="form-wrapper">
-                <form action="" method="post">
-                    <h3>Please enter your login and password</h3>
-                    <input type="text" placeholder="login" required>
-                    <input type="password" placeholder="password" required>
-                    <button>Login</button>
-                </form>
+                        <input type="password" name="passwordRepeat" placeholder="repeat password" required>
+                        <?php if (isset($passwordErr)) echo "<label>$passwordErr</label>" ?>
+                        <?php if (isset($success)) echo "<label>$success</label>" ?>
+                        <button type="submit" name="register">Register</button>
+                    </form>
+                </div>
             </div>
-            <div class="form-wrapper">
-                <form action="" method="post">
-                    <h3>Or you can register your new account</h3>
-                    <input type="text" placeholder="login" required>
-                    <input type="password" placeholder="password" required>
-                    <input type="password" placeholder="repeat password" required>
-                    <button>Register</button>
-                </form>
+        <?php else: ?>
+            <div class="item-list">
+
             </div>
-        </div>
-    <?php else: ?>
+        <?php endif; ?>
+    </main>
 
-    <?php endif; ?>
-</main>
-
-<footer>
-
-</footer>
-</body>
-</html>
+<?php include 'inc/footer.php';
