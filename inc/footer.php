@@ -5,4 +5,3 @@
 </html>
 
 
-<?php $conn->close(); ?>

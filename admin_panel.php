@@ -29,77 +29,128 @@ if (isset($_POST['submit'])) {
     }
 }
 
+if (!isset($_GET['form']) || $_GET['form'] == 1)
+    $sql = "SELECT * FROM product_list";
+elseif ($_GET['form'] == 2)
+    $sql = "SELECT * FROM product_requests";
 
-$sql = "SELECT * FROM product_list";
 $res = $conn->query($sql);
 ?>
     <main>
         <?php if (isset($_SESSION['admin'])): ?>
-            <div class="product-admin-container">
-                <div class="table-wrapper">
-                    <?php if ($res->num_rows > 0): ?>
-                        <table class="admin-products">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Назва продукту</th>
-                                <th>Опис</th>
-                                <th>Ціна</th>
-                                <th>Фото</th>
-                                <th>Артикул</th>
-                                <th>Чи активний</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php while ($item = $res->fetch_assoc()): ?>
+            <form class="form-selector" action="" method="get">
+                <select name="form">
+                    <option value="1" selected>Продукти</option>
+                    <option value="2">Заявки</option>
+                </select>
+                <button type="submit">Перейти</button>
+            </form>
+
+            <?php if (!isset($_GET['form']) || $_GET['form'] == 1): ?>
+
+                <div class="product-admin-container">
+                    <div class="table-wrapper">
+                        <?php if ($res->num_rows > 0): ?>
+                            <table class="admin-products">
+                                <thead>
                                 <tr>
-                                    <td><?= $item['id'] ?></td>
-                                    <td><?= $item['product_name'] ?></td>
-                                    <td><?= $item['description'] ?></td>
-                                    <td><?= $item['price'] . '<span>₴</span>' ?></td>
-                                    <td><img height="100" width="100" src="photo/<?= $item['photo'] ?>"
-                                             alt="img of product"></td>
-                                    <td><?= $item['article'] ?></td>
-                                    <td><?= $item['is_active'] ?></td>
+                                    <th>ID</th>
+                                    <th>Назва продукту</th>
+                                    <th>Опис</th>
+                                    <th>Ціна</th>
+                                    <th>Фото</th>
+                                    <th>Артикул</th>
+                                    <th>Чи активний</th>
                                 </tr>
-                            <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <h3>У списку немає продуктів</h3>
-                    <?php endif; ?>
+                                </thead>
+                                <tbody>
+                                <?php while ($item = $res->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?= $item['id'] ?></td>
+                                        <td><?= $item['product_name'] ?></td>
+                                        <td><?= $item['description'] ?></td>
+                                        <td><?= $item['price'] . '<span>₴</span>' ?></td>
+                                        <td><img height="100" width="100" src="photo/<?= $item['photo'] ?>"
+                                                 alt="img of product"></td>
+                                        <td><?= $item['article'] ?></td>
+                                        <td><?= $item['is_active'] ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <h3>У списку немає продуктів</h3>
+                        <?php endif; ?>
+                    </div>
+                    <div class="form-container">
+                        <form action="" method="post" enctype="multipart/form-data">
+
+                            <label>Назва продукту</label>
+                            <input type="text" name="product_name" required>
+
+                            <label>Опис продукту</label>
+                            <textarea name="description" required></textarea>
+
+                            <label>Ціна продукту</label>
+                            <input type="text" name="price">
+
+                            <label>Завантажте фото продукту</label>
+                            <input type="file" name="photo" accept="image/jpeg, image/png, .svg" required>
+
+                            <label>Артикул продукту</label>
+                            <input type="text" name="article" required>
+
+                            <label for="is_active">Продукт активний для покупки?</label>
+                            <select name="is_active" id="is_active" required>
+                                <option value="0">Неактивний</option>
+                                <option value="1" selected>Активний</option>
+                            </select>
+                            <button type="submit" name="submit">Завантажити</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-container">
-                    <form action="" method="post" enctype="multipart/form-data">
-
-                        <label>Назва продукту</label>
-                        <input type="text" name="product_name" required>
-
-                        <label>Опис продукту</label>
-                        <textarea name="description" required></textarea>
-
-                        <label>Ціна продукту</label>
-                        <input type="text" name="price">
-
-                        <label>Завантажте фото продукту</label>
-                        <input type="file" name="photo" accept="image/jpeg, image/png, .svg" required>
-
-                        <label>Артикул продукту</label>
-                        <input type="text" name="article" required>
-
-                        <label for="is_active">Продукт активний для покупки?</label>
-                        <select name="is_active" id="is_active" required>
-                            <option value="0">Неактивний</option>
-                            <option value="1" selected>Активний</option>
-                        </select>
-                        <button type="submit" name="submit">Завантажити</button>
-                    </form>
+            <?php elseif ($_GET['form'] == 2): ?>
+                <div>
+                    <h2>Список заявок</h2>
+                    <div class="table-wrapper">
+                        <?php if ($res->num_rows > 0): ?>
+                            <table class="admin-products">
+                                <thead>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>ID продукту</td>
+                                    <td>Ім'я клієнта</td>
+                                    <td>Номер телефону</td>
+                                    <td>Коментар</td>
+                                    <td>Статус</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php while ($item = $res->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?= $item['id'] ?></td>
+                                        <td>
+                                            <a href="product_page.php?id=<?= $item['product_id'] ?>">
+                                                <?= $item['product_id'] ?></a>
+                                        </td>
+                                        <td><?= $item['client_name'] ?></td>
+                                        <td><?= $item['client_phone'] ?></td>
+                                        <td><?= $item['comment'] ?></td>
+                                        <td><?= $item['status'] ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <h3>У списку немає заявок</h3>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
-
+            <?php endif; ?>
         <?php else: ?>
-            <h2>You must be logged in as admin to see this page!</h2>
+            <h2>Вам потрібно увійти як адмін для перегляду інформації!</h2>
         <?php endif; ?>
 
     </main>
 <?php include 'inc/footer.php';
+$conn->close();

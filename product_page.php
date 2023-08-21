@@ -20,8 +20,8 @@ if (isset($_GET['id'])) {
 }
 ?>
 <main>
+    <a href="index.php?page=<?= $_GET['page'] ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
     <div class="detail-container">
-        <a href="index.php?page=<?= $_GET['page'] ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
         <div class="product-detail-container">
             <div class="photo-wrapper">
                 <img src="photo/<?= $res['photo'] ?>" alt="photo of product" width="512" height="512">
@@ -45,4 +45,5 @@ if (isset($_GET['id'])) {
 
 <?php
 include 'inc/footer.php';
+$conn->close();
 ?>

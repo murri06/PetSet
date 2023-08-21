@@ -97,7 +97,25 @@ footer {
     overflow: auto;
 }
 
+.form-selector {
+    margin-top: 20px;
+    display: flex;
+    max-width: 30vw;
+    flex-direction: row;
+    justify-content: flex-start;
+    min-width: 30vw;
+}
+
+.form-selector select {
+    font-size: 20px;
+    min-width: 10vw;
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
 .form-container {
+    text-align: start;
     max-width: 30vw;
     margin-top: 10px;
 }
@@ -159,6 +177,12 @@ footer {
 }
 
 .container {
+    text-align: center;
+}
+
+.request-container {
+    display: flex;
+    justify-content: center;
     text-align: center;
 }
 

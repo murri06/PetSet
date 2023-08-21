@@ -11,6 +11,7 @@ if (isset($_POST['login'])) {
         if (password_verify($password, $res['password'])) {
             $_SESSION['admin'] = $res['username'];
             header("Location: /petset/admin_panel.php");
+            exit();
 
         } else $err = 'Login and password does not match!';
 
@@ -19,18 +20,19 @@ if (isset($_POST['login'])) {
 
 
 ?>
-<main>
-    <div class="login-container">
-        <div class="form-wrapper">
-            <form action="" method="post">
-                <h3>Please enter your login and password ot access admin panel</h3>
-                <input type="text" name="username" placeholder="login" required>
-                <input type="password" name="password" placeholder="password" required>
-                <?php if (isset($err)) echo "<label>$err</label>" ?>
-                <button type="submit" name="login">Login</button>
-            </form>
+    <main>
+        <div class="login-container">
+            <div class="form-wrapper">
+                <form action="" method="post">
+                    <h3>Please enter your login and password ot access admin panel</h3>
+                    <input type="text" name="username" placeholder="login" required>
+                    <input type="password" name="password" placeholder="password" required>
+                    <?php if (isset($err)) echo "<label>$err</label>" ?>
+                    <button type="submit" name="login">Login</button>
+                </form>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
 <?php include 'footer.php';
+$conn->close();

@@ -118,3 +118,4 @@ $product_list = $conn->query($sql);
     </main>
 
 <?php include 'inc/footer.php';
+$conn->close();
