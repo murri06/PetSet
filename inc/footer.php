@@ -1,5 +1,5 @@
 <footer>
-    <h2>By Ruslan Liakhovets 2023</h2>
+    <h3>PetSet LTD</h3>
 </footer>
 </body>
 </html>

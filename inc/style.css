@@ -167,6 +167,7 @@ footer {
 
 .admin-products {
     border-spacing: 3px;
+    font-size: 20px;
 }
 
 .admin-products tr {
@@ -205,6 +206,7 @@ footer {
 }
 
 .container {
+    min-height:80vh;
     text-align: center;
 }
 
@@ -299,12 +301,14 @@ footer {
 
 .photo-wrapper {
     padding: 20px;
-    color: aliceblue;
+    background: aliceblue;
     border: black solid 2px;
 }
 
 .info-details {
-    padding-right: 100px;
+    background: aliceblue;
+    padding: 32px;
+    margin-right: 100px;
     max-width: 20vw;
 }
 

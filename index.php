@@ -5,19 +5,19 @@ include 'inc/header.php';
 if (isset($_GET['e'])) {
     switch ($_GET['e']) {
         case 0:
-            $usernameErr = 'That login is occupied, please choose another!';
+            $usernameErr = 'Цей логін уже зайнятий, будь ласка, виберіть інший!';
             break;
         case 1:
-            $passwordErr = 'Passwords does not matches!';
+            $passwordErr = 'Паролі не співпадають!';
             break;
         case 2:
-            $success = 'Now you can login into your account!';
+            $success = 'Тепер ви можете увійти до вашого аккаунту!';
             break;
         case 3:
-            $passwordErr = 'Something went wrong, please try again later!';
+            $passwordErr = 'Щось пішло не так, спробуйте ще раз. . .';
             break;
         case 4:
-            $loginErr = 'Login and password does not match!';
+            $loginErr = 'Логін та пароль не співпадають!';
             break;
     }
 }
@@ -45,24 +45,23 @@ $product_list = $conn->query($sql);
             <div class="login-container">
                 <div class="form-wrapper">
                     <form action="inc/login.php" method="post">
-                        <h3>Please enter your login and password</h3>
-                        <input type="text" name="username" placeholder="login" required>
-                        <input type="password" name="password" placeholder="password" required>
+                        <h3>Введіть ваш логін та пароль</h3>
+                        <input type="text" name="username" placeholder="логін" required>
+                        <input type="password" name="password" placeholder="пароль" required>
                         <?php if (isset($loginErr)) echo "<label>$loginErr</label>" ?>
-                        <button type="submit" name="login">Login</button>
+                        <button type="submit" name="login">Увійти</button>
                     </form>
                 </div>
                 <div class="form-wrapper">
                     <form action="inc/login.php" method="post">
-                        <h3>Or you can register your new account</h3>
-                        <input type="text" name="username" placeholder="login" required>
+                        <h3>Або ви можете зареєструвати новий аккаунт</h3>
+                        <input type="text" name="username" placeholder="логін" required>
                         <?php if (isset($usernameErr)) echo "<label>$usernameErr</label>" ?>
-                        <input type="password" name="password" placeholder="password" required>
-
-                        <input type="password" name="passwordRepeat" placeholder="repeat password" required>
+                        <input type="password" name="password" placeholder="пароль" required>
+                        <input type="password" name="passwordRepeat" placeholder="повторіть пароль" required>
                         <?php if (isset($passwordErr)) echo "<label>$passwordErr</label>" ?>
                         <?php if (isset($success)) echo "<label>$success</label>" ?>
-                        <button type="submit" name="register">Register</button>
+                        <button type="submit" name="register">Зареєструватись</button>
                     </form>
                 </div>
             </div>
@@ -91,11 +90,11 @@ $product_list = $conn->query($sql);
                     з <?= $num_pages ?></h3>
             </div>
             <div class="page-selector">
-                <a href="?page=1">First</a>
+                <a href="?page=1">Перша</a>
                 <?php if (isset($page) && $page > 0): ?>
-                    <a href="?page=<?= $page ?>">Previous</a>
+                    <a href="?page=<?= $page ?>">Попередня</a>
                 <?php else: ?>
-                    <a class="inactive">Previous</a>
+                    <a class="inactive">Попередня</a>
                 <?php endif; ?>
 
                 <?php for ($i = 1;
@@ -106,13 +105,13 @@ $product_list = $conn->query($sql);
                 <?php endfor; ?>
 
                 <?php if (!isset($page)): ?>
-                    <a href="?page=2">Next</a>
+                    <a href="?page=2">Наступна</a>
                 <?php elseif ($page + 1 >= $num_pages): ?>
-                    <a class="inactive">Next</a>
+                    <a class="inactive">Наступна</a>
                 <?php else: ?>
-                    <a href="?page=<?= $page + 2 ?>">Next</a>
+                    <a href="?page=<?= $page + 2 ?>">Наступна</a>
                 <?php endif; ?>
-                <a href="?page=<?= $num_pages ?>">Last</a>
+                <a href="?page=<?= $num_pages ?>">Остання</a>
             </div>
         <?php endif; ?>
     </main>

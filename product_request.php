@@ -39,6 +39,7 @@ if (isset($_GET['id'])) {
     $res = $res->fetch_assoc();
 } else {
     header("Location: index.php");
+    include 'inc/footer.php';
     exit();
 }
 ?>
@@ -64,7 +65,7 @@ if (isset($_GET['id'])) {
                 <label>Введіть коментар (Необов'язково):</label>
                 <input type="text" name="comment" placeholder="Коментар"
                        value="<?= $_POST['comment'] ?? '' ?>">
-                <button type="submit" name="submit">Відправити</button>
+                <button type="submit" name="submit">Створити заявку</button>
             </form>
         </div>
     </div>

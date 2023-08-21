@@ -13,9 +13,9 @@ if (isset($_POST['login'])) {
             header("Location: /petset/admin_panel.php");
             exit();
 
-        } else $err = 'Login and password does not match!';
+        } else $err = 'Логін та пароль не співпадають!';
 
-    } else $err = 'Login and password does not match!';
+    } else $err = 'Логін та пароль не співпадають!';
 }
 
 
@@ -24,11 +24,11 @@ if (isset($_POST['login'])) {
         <div class="login-container">
             <div class="form-wrapper">
                 <form action="" method="post">
-                    <h3>Please enter your login and password ot access admin panel</h3>
-                    <input type="text" name="username" placeholder="login" required>
-                    <input type="password" name="password" placeholder="password" required>
+                    <h3>Введіть логін та пароль для входу як адміністратор</h3>
+                    <input type="text" name="username" placeholder="логін" required>
+                    <input type="password" name="password" placeholder="пароль" required>
                     <?php if (isset($err)) echo "<label>$err</label>" ?>
-                    <button type="submit" name="login">Login</button>
+                    <button type="submit" name="login">Увійти</button>
                 </form>
             </div>
         </div>
