@@ -10,15 +10,18 @@ if (isset($_GET['id'])) {
     if ($res->num_rows == 0) {
         $err = 'На жаль, такого продукту не існує.';
         header("HTTP/1.1 404 Not Found");
-        include("inc/404.php");
+        include("inc/error_page_404.php");
         exit();
     }
     $res = $res->fetch_assoc();
+} else {
+    header("Location: index.php");
+    exit();
 }
 ?>
 <main>
     <div class="detail-container">
-        <a href="index.php"><i class="bi bi-arrow-left-square-fill"></i></a>
+        <a href="index.php?page=<?= $_GET['page'] ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
         <div class="product-detail-container">
             <div class="photo-wrapper">
                 <img src="photo/<?= $res['photo'] ?>" alt="photo of product" width="512" height="512">
@@ -29,7 +32,7 @@ if (isset($_GET['id'])) {
                     <h3 class="article">Артикул:<?= $res['article'] ?></h3>
                     <div class="detail-price">
                         <h2><?= $res['price'] ?> <span>₴</span></h2>
-                        <a href="product_request.php?id=<?= $res['id'] ?>">
+                        <a href="product_request.php?id=<?= $res['id'] ?><?php if (isset($page)) echo "&page=" . $page + 1; else echo "&page=1" ?>">
                             <button>Залишити заявку</button>
                         </a>
                     </div>

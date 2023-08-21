@@ -38,16 +38,16 @@ $res = $conn->query($sql);
             <div class="product-admin-container">
                 <div class="table-wrapper">
                     <?php if ($res->num_rows > 0): ?>
-                        <table>
+                        <table class="admin-products">
                             <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Product Name</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Photo</th>
-                                <th>Article</th>
-                                <th>Is Active</th>
+                                <th>ID</th>
+                                <th>Назва продукту</th>
+                                <th>Опис</th>
+                                <th>Ціна</th>
+                                <th>Фото</th>
+                                <th>Артикул</th>
+                                <th>Чи активний</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -56,8 +56,9 @@ $res = $conn->query($sql);
                                     <td><?= $item['id'] ?></td>
                                     <td><?= $item['product_name'] ?></td>
                                     <td><?= $item['description'] ?></td>
-                                    <td><?= $item['price'] . 'грн' ?></td>
-                                    <td><img height="100" width="100" src="photo/<?= $item['photo'] ?>" alt="img of product"></td>
+                                    <td><?= $item['price'] . '<span>₴</span>' ?></td>
+                                    <td><img height="100" width="100" src="photo/<?= $item['photo'] ?>"
+                                             alt="img of product"></td>
                                     <td><?= $item['article'] ?></td>
                                     <td><?= $item['is_active'] ?></td>
                                 </tr>
@@ -65,33 +66,33 @@ $res = $conn->query($sql);
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <h3>There is no items in a list</h3>
+                        <h3>У списку немає продуктів</h3>
                     <?php endif; ?>
                 </div>
                 <div class="form-container">
                     <form action="" method="post" enctype="multipart/form-data">
 
-                        <label>Full product name</label>
+                        <label>Назва продукту</label>
                         <input type="text" name="product_name" required>
 
-                        <label>Description of the product</label>
-                        <input type="text" name="description" required>
+                        <label>Опис продукту</label>
+                        <textarea name="description" required></textarea>
 
-                        <label>Price of the product</label>
+                        <label>Ціна продукту</label>
                         <input type="text" name="price">
 
-                        <label> Upload photo of the product</label>
+                        <label>Завантажте фото продукту</label>
                         <input type="file" name="photo" accept="image/jpeg, image/png, .svg" required>
 
-                        <label> Article for the product</label>
+                        <label>Артикул продукту</label>
                         <input type="text" name="article" required>
 
-                        <label for="is_active">Is product active for a purchase?</label>
+                        <label for="is_active">Продукт активний для покупки?</label>
                         <select name="is_active" id="is_active" required>
-                            <option value="0">inactive</option>
-                            <option value="1" selected>active</option>
+                            <option value="0">Неактивний</option>
+                            <option value="1" selected>Активний</option>
                         </select>
-                        <button type="submit" name="submit">Upload</button>
+                        <button type="submit" name="submit">Завантажити</button>
                     </form>
                 </div>
             </div>

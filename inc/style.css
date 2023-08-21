@@ -89,17 +89,73 @@ footer {
     align-items: center;
 }
 
+.table-wrapper {
+    padding: 5px;
+    max-width: 50vw;
+    margin-top: 20px;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.form-container {
+    max-width: 30vw;
+    margin-top: 10px;
+}
+
+.form-container textarea {
+    height: 150px;
+    width: 500px;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.form-container select {
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+.form-container input::file-selector-button {
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    background: black;
+}
+
+.admin-products tr {
+    background: aliceblue;
+    text-wrap: normal;
+}
+
 .item-list {
-    padding: 20px 10vw 10vw 0;
+    padding: 20px 0 10px 0;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .product-container {
     padding: 10px;
+    margin-right: 20px;
+    margin-bottom: 20px;
     border-radius: 10px;
     background: aliceblue;
-    max-height: 250px;
-    max-width: 150px;
+    max-height: 400px;
+    max-width: 260px;
+    min-width: 200px;
+}
+
+.product-container button {
+    border-radius: 10px;
+    background: black;
+    color: white;
+    padding: 6px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.product-container button:hover {
+    background: #555555;
 }
 
 .container {
@@ -148,6 +204,7 @@ footer {
 
 .info-details {
     padding-right: 100px;
+    max-width: 20vw;
 }
 
 .detail-price {
@@ -163,6 +220,11 @@ footer {
     color: white;
     border-radius: 10px;
     padding: 7px;
+}
+
+.detail-price button:hover {
+    background: #555555;
+    cursor: pointer;
 }
 
 .article {
@@ -181,4 +243,24 @@ footer {
     border-radius: 10px;
     border: none;
     color: black;
+}
+
+.bi-arrow-left-square-fill:hover {
+    color: #555555;
+}
+
+.page-selector {
+    display: flex;
+}
+
+.page-selector a {
+    padding: 10px;
+    color: white;
+    background: black;
+    border: rebeccapurple solid 2px;
+}
+
+.inactive {
+    background: #555555 !important;
+    pointer-events: none;
 }
