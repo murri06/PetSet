@@ -20,7 +20,7 @@ if (isset($_GET['id'])) {
 }
 ?>
 <main>
-    <a href="index.php?page=<?= $_GET['page'] ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
+    <a href="index.php?page=<?= $_GET['page'] ?? '1' ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
     <div class="detail-container">
         <div class="product-detail-container">
             <div class="photo-wrapper">

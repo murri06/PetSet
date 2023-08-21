@@ -10,7 +10,10 @@ if (isset($_POST['submit'])) {
     } else {
         $name = filter_input(INPUT_POST, 'clientName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $product_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (isset($_POST['comment']))
+            $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        else
+            $comment = '';
         $sql = "INSERT INTO `product_requests`( `product_id`, `client_name`, `client_phone`, `comment`, `status`) 
                 VALUES ('$product_id','$name','$phone','$comment','Новий')";
         if ($conn->query($sql)) {
@@ -41,7 +44,7 @@ if (isset($_GET['id'])) {
 ?>
 
 <main>
-    <a href="index.php?page=<?= $_GET['page'] ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
+    <a href="index.php?page=<?= $_GET['page'] ?? '1' ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
     <div class="request-container">
         <div class="form-container">
             <form action="" method="post">
@@ -50,17 +53,17 @@ if (isset($_GET['id'])) {
                     наш менеджер вам обов'язково зателефонує!</h3>
                 <label>Введіть ваше ім'я:</label>
                 <input type="text" name="clientName" required placeholder="Ім'я"
-                       value="<?php if (isset($_POST['clientName'])) echo $_POST['clientName'] ?>">
+                       value="<?= $_POST['client_name'] ?? '' ?>">
                 <label>Введіть ваш номер телефону:</label>
                 <input type="tel" pattern="[0-9]{10}" name="phone" placeholder="Приклад: 0987654321" minlength="10"
                        size="10" maxlength="10" required
-                       value="<?php if (isset($_POST['phone'])) echo $_POST['phone'] ?>">
+                       value="<?= $_POST['client_phone'] ?? '' ?>">
                 <?php if (isset($phoneErr)): ?>
                     <label class="error-message"><?= $phoneErr ?></label>
                 <?php endif; ?>
-                <label>Введіть коментар:</label>
-                <input type="text" name="comment" required placeholder="Коментар"
-                       value="<?php if (isset($_POST['comment'])) echo $_POST['comment'] ?>">
+                <label>Введіть коментар (Необов'язково):</label>
+                <input type="text" name="comment" placeholder="Коментар"
+                       value="<?= $_POST['comment'] ?? '' ?>">
                 <button type="submit" name="submit">Відправити</button>
             </form>
         </div>

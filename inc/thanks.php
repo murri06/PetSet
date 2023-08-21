@@ -14,7 +14,7 @@ if (isset($_GET['id'])) {
     <div class="container">
         <h2>Дякуємо за заявку. Заявка номер <?= $request_id ?>, очікуйте, протягом
             доби з вам зв’яжеться менеджер.</h2>
-        <a href="/petset/index.php" class="home-link">Go Home</a>
+        <a href="/petset/index.php" class="home-link">На головну</a>
     </div>
     <?php include 'footer.php' ?>
 
