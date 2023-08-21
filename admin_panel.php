@@ -3,8 +3,10 @@
 include 'inc/database.php';
 include 'inc/header.php';
 
+// submitting form to create a new product or update already existing
 if (isset($_POST['submit'])) {
 
+    //receiving data from the form
     $product_name = filter_input(INPUT_POST, 'product_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -12,6 +14,7 @@ if (isset($_POST['submit'])) {
     $article = filter_input(INPUT_POST, 'article', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $is_active = filter_input(INPUT_POST, 'is_active', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+    // in case of creating new object uploading photo of product to the /photo folder
     if (!isset($_GET['id'])) {
         $filename = $_FILES['photo']['name'];
         $fileTemp = $_FILES['photo']['tmp_name'];
@@ -22,6 +25,7 @@ if (isset($_POST['submit'])) {
         $newFileName = time() . '.' . $extension;
         $target = __DIR__ . '/photo/' . $newFileName;
 
+        // if uploading is succeed inserting data to the db
         if (move_uploaded_file($fileTemp, $target)) {
             $sql = "INSERT INTO product_list(`product_name`, `description`, `price`, `article`, `photo`, `is_active`) 
                 VALUES('$product_name', '$description', '$price', '$article', '$newFileName', '$is_active')";
@@ -29,6 +33,7 @@ if (isset($_POST['submit'])) {
                 header('Location: ' . $_SERVER['PHP_SELF'] . '?success');
         }
     } else {
+        // in case of updating already existing object receiving id from GET request and updating row in db
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sql = "UPDATE `product_list` SET `product_name`='$product_name',`description`='$description',
                           `price`='$price',`article`='$article',`is_active`='$is_active' WHERE id = '$id'";
@@ -38,6 +43,7 @@ if (isset($_POST['submit'])) {
 
 }
 
+// creating sql request depending on current form and filter
 if (!isset($_GET['form']) || $_GET['form'] == 1)
     $sql = "SELECT * FROM product_list";
 elseif ($_GET['form'] == 2) {
@@ -48,10 +54,13 @@ elseif ($_GET['form'] == 2) {
     }
 }
 
+// receiving data from db
 $res = $conn->query($sql);
 ?>
     <main>
+        <!-- if user is logged in as admin, showing page -->
         <?php if (isset($_SESSION['admin'])): ?>
+            <!-- form for a different lists of products and requests  -->
             <form class="form-selector" action="" method="get">
                 <select name="form">
                     <option value="1" selected>Продукти</option>
@@ -60,10 +69,11 @@ $res = $conn->query($sql);
                 <button type="submit">Перейти</button>
             </form>
 
+            <!-- in case of form 1 showing table of products and form for creating new or updating already existing products -->
             <?php if (!isset($_GET['form']) || $_GET['form'] == 1): ?>
-
                 <div class="product-admin-container">
                     <div class="table-wrapper">
+                        <!-- checking if list contains any records  -->
                         <?php if ($res->num_rows > 0): ?>
                             <table class="admin-products">
                                 <thead>
@@ -80,6 +90,7 @@ $res = $conn->query($sql);
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <!-- showing info about products and buttons for edit and deletion of product   -->
                                 <?php while ($item = $res->fetch_assoc()): ?>
                                     <tr>
                                         <td><?= $item['id'] ?></td>
@@ -103,15 +114,18 @@ $res = $conn->query($sql);
                                 unset($res); ?>
                                 </tbody>
                             </table>
+                            <!-- in case of empty list show hint    -->
                         <?php else: ?>
                             <h3>У списку немає продуктів</h3>
                         <?php endif; ?>
                     </div>
+                    <!--  if there is chosen product, receiving and storing info about it   -->
                     <?php if (isset($_GET['id'])) {
                         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         $sql = "SELECT * FROM product_list WHERE id = '$id'";
                         $res = $conn->query($sql)->fetch_assoc();
                     } ?>
+                    <!-- form for creating and updating products    -->
                     <div class="form-container">
                         <form action="" method="post" enctype="multipart/form-data">
 
@@ -123,7 +137,7 @@ $res = $conn->query($sql);
 
                             <label>Ціна продукту</label>
                             <input type="text" name="price" value="<?= $res['price'] ?? '' ?>">
-
+                            <!-- if case of updating product there is no way to change photo -->
                             <?php if (!isset($_GET['id'])): ?>
                                 <label>Завантажте фото продукту</label>
                                 <input type="file" name="photo"
@@ -147,6 +161,7 @@ $res = $conn->query($sql);
                         </form>
                     </div>
                 </div>
+                <!-- in case of form 2 showing table of requests and form for updating it   -->
             <?php elseif ($_GET['form'] == 2): ?>
                 <div class="request-container">
                     <div class="table-wrapper">
@@ -221,6 +236,7 @@ $res = $conn->query($sql);
                             <h3>У списку немає заявок</h3>
                         <?php endif; ?>
                     </div>
+                    <!-- if chosen request to update, receiving existing information about it and showing form for updating -->
                     <?php if (isset($_GET['id'])):
                         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         $sql = "SELECT * FROM product_requests WHERE id = '$id'";
@@ -265,6 +281,7 @@ $res = $conn->query($sql);
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
+            <!-- if user is not logged in as admin, showing hint to log in -->
         <?php else: ?>
             <h2>Вам потрібно увійти як адмін для перегляду інформації!</h2>
         <?php endif; ?>

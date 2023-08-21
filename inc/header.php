@@ -1,4 +1,5 @@
 <?php
+// starting session for login information
 session_start();
 
 ?>
@@ -18,6 +19,7 @@ session_start();
         <a href="/petset/index.php"><img src="/petset/inc/logo1024.png" alt="company logo" height="80" width="80"></a>
         <div class="header-login">
             <h3>
+                <!-- if user is logged in as admin, showing link to admin panel and ability to logout else ability to login as admin -->
                 <?php if (isset($_SESSION['admin'])): ?>
                     <a href="/petset/admin_panel.php">Адмін панель </a>
                     <a href="inc/logout.php">Вийти </a>
@@ -25,6 +27,7 @@ session_start();
                     <a href="/petset/inc/admin.php">Адмін логін </a>
                 <?php endif; ?>
             </h3>
+            <!--  showing username and ability to logout if user is logged in -->
             <?php if (isset($_SESSION['username'])): ?>
                 <h3>Вітаємо, <?= $_SESSION['username'] ?> <a href="inc/logout.php">Вийти</a></h3>
             <?php endif; ?>

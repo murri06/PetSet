@@ -2,10 +2,14 @@
 include 'database.php';
 include 'header.php';
 
+// if form is submitted, receiving and validating info from it
 if (isset($_POST['login'])) {
     $login = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $res = $conn->query("SELECT * FROM admin_login WHERE `username` = '$login' LIMIT 1");
+
+    // checking if there is user with that username and validating password hash
+    // in case of succeeding proceed and redirect to the admin panel, else showing hint
     if ($res->num_rows > 0) {
         $res = $res->fetch_assoc();
         if (password_verify($password, $res['password'])) {
@@ -21,6 +25,7 @@ if (isset($_POST['login'])) {
 
 ?>
     <main>
+        <!-- showing form for log in -->
         <div class="login-container">
             <div class="form-wrapper">
                 <form action="" method="post">

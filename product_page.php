@@ -2,11 +2,12 @@
 include 'inc/database.php';
 include 'inc/header.php';
 
-
+// receiving info about product using id from the GET request
 if (isset($_GET['id'])) {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $sql = "SELECT * FROM product_list WHERE id = '$id' AND is_active = 1";
     $res = $conn->query($sql);
+    // if there is no existing product on sale with this id, showing 404 page
     if ($res->num_rows == 0) {
         $err = 'На жаль, такого продукту не існує.';
         header("HTTP/1.1 404 Not Found");
@@ -15,13 +16,16 @@ if (isset($_GET['id'])) {
     }
     $res = $res->fetch_assoc();
 } else {
+    // if there is no any of id, redirecting to homepage
     header("Location: index.php");
     exit();
 }
 ?>
 <main>
+    <!-- button to get back to the product list   -->
     <a href="index.php?page=<?= $_GET['page'] ?? '1' ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
     <div class="detail-container">
+        <!--  showing information about product -->
         <div class="product-detail-container">
             <div class="photo-wrapper">
                 <img src="photo/<?= $res['photo'] ?>" alt="photo of product" width="512" height="512">

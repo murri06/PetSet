@@ -2,6 +2,17 @@
 include 'inc/database.php';
 include 'inc/header.php';
 
+function truncateText($text, $maxLength)
+{
+    if (strlen($text) > $maxLength) {
+        $truncatedText = substr($text, 0, $maxLength) . '...';
+    } else {
+        $truncatedText = $text;
+    }
+    return $truncatedText;
+}
+
+// receiving error code from GET request
 if (isset($_GET['e'])) {
     switch ($_GET['e']) {
         case 0:
@@ -22,6 +33,7 @@ if (isset($_GET['e'])) {
     }
 }
 
+// receiving number of records in db to count number of pages
 $records = $conn->query("SELECT * FROM product_list WHERE is_active = 1");
 $num_products = $records->num_rows;
 
@@ -29,18 +41,19 @@ $start_item = 0;
 $limit_items = 20;
 $num_pages = ceil($num_products / $limit_items);
 
+// receiving page number from the GET request
 if (isset($_GET['page']) && is_numeric($_GET['page'])) {
     $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS) - 1;
     $start_item = $page * $limit_items;
 }
 
+// sql request to receive data on products from db
 $sql = "SELECT * FROM product_list WHERE is_active = 1 LIMIT $start_item, $limit_items";
 $product_list = $conn->query($sql);
-
-
 ?>
 
     <main>
+        <!--  showing login and register windows when user is not logged it    -->
         <?php if (!isset($_SESSION['username'])): ?>
             <div class="login-container">
                 <div class="form-wrapper">
@@ -66,6 +79,7 @@ $product_list = $conn->query($sql);
                 </div>
             </div>
         <?php else: ?>
+            <!-- showing product list when user is logged in   -->
             <div class="item-list">
                 <?php while ($item = $product_list->fetch_assoc()): ?>
                     <div class="product-container">
@@ -76,6 +90,7 @@ $product_list = $conn->query($sql);
                             <h3><?= $item['product_name'] ?>
                                 <?= $item['price'] . ' <span>₴</span>' ?></h3>
                         </a>
+                        <h4><?= truncateText($item['description'], 100) ?></h4>
                         <a href="product_page.php?id=<?= $item['id'] ?><?php if (isset($page)) echo "&page=" . $page + 1; else echo "&page=1" ?>">
                             <button>Переглянути детальніше</button>
                         </a>
@@ -85,6 +100,7 @@ $product_list = $conn->query($sql);
                     </div>
                 <?php endwhile; ?>
             </div>
+            <!--  info about pages and links for pagination    -->
             <div class="page-info">
                 <h3>Перегляд сторінки <?php if (isset($page)) echo $page + 1; else echo '1' ?>
                     з <?= $num_pages ?></h3>
@@ -96,17 +112,15 @@ $product_list = $conn->query($sql);
                 <?php else: ?>
                     <a class="inactive">Попередня</a>
                 <?php endif; ?>
-
-                <?php for ($i = 1;
-                           $i <= $num_pages;
-                           $i++): ?>
+                <!--  creating links for each page depending on number of pages  -->
+                <?php for ($i = 1; $i <= $num_pages; $i++): ?>
                     <a href="?page=<?= $i ?>"
                        class="<?php if (isset($page) && $i == $page + 1) echo 'inactive' ?>"><?= $i ?></a>
                 <?php endfor; ?>
 
-                <?php if (!isset($page)): ?>
+                <?php if (!isset($page) && $num_pages > 1): ?>
                     <a href="?page=2">Наступна</a>
-                <?php elseif ($page + 1 >= $num_pages): ?>
+                <?php elseif (!isset($page) || $page + 1 >= $num_pages): ?>
                     <a class="inactive">Наступна</a>
                 <?php else: ?>
                     <a href="?page=<?= $page + 2 ?>">Наступна</a>

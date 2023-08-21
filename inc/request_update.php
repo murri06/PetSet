@@ -1,6 +1,7 @@
 <?php
 include 'database.php';
 
+// if form is submitted, sanitizing information and executing the request to the db
 if (isset($_POST['submit'])) {
     $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -13,4 +14,5 @@ if (isset($_POST['submit'])) {
     $sql = "UPDATE `product_requests` SET `admin_comment`='$comment',`status`='$status' WHERE id = '$id'";
     $conn->query($sql);
 }
+// redirecting back
 header("Location: /petset/admin_panel.php?form=2");

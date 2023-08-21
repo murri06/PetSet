@@ -2,9 +2,11 @@
 include 'inc/database.php';
 include 'inc/header.php';
 
+// in case of form submitting, receiving and filtering information and prepairing it to creating a new db record
 if (isset($_POST['submit'])) {
     $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_NUMBER_INT);
     $phonePattern = '/^[0-9]{10}$/';
+    // phone validation and proceeding if succeed
     if (!preg_match($phonePattern, $phone)) {
         $phoneErr = 'Неправильний формат телефонного номеру.';
     } else {
@@ -26,10 +28,13 @@ if (isset($_POST['submit'])) {
 
 }
 
+
+// receiving information about product from GET request
 if (isset($_GET['id'])) {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $sql = "SELECT * FROM product_list WHERE id = '$id' AND is_active = 1";
     $res = $conn->query($sql);
+    // if there is no existing product on sale with this id, showing 404 page
     if ($res->num_rows == 0) {
         $err = 'На жаль, не можна зробити заявку на неіснуючий продукт.';
         header("HTTP/1.1 404 Not Found");
@@ -38,16 +43,18 @@ if (isset($_GET['id'])) {
     }
     $res = $res->fetch_assoc();
 } else {
+    // if there is no any of id, redirecting to homepage
     header("Location: index.php");
-    include 'inc/footer.php';
     exit();
 }
 ?>
 
 <main>
+    <!-- button to get back to the product list   -->
     <a href="index.php?page=<?= $_GET['page'] ?? '1' ?>"><i class="bi bi-arrow-left-square-fill"></i></a>
     <div class="request-container">
         <div class="form-container">
+            <!--  form for submitting request -->
             <form action="" method="post">
                 <h3>Залишіть заявку на продукт '<?= $res['product_name'] ?>' за ціною <?= $res['price'] ?>
                     <span>₴</span> і
