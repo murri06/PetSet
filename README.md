@@ -1,9 +1,9 @@
 # PetSet
 
-project by Ruslan Liakhovets
+### project by Ruslan Liakhovets
 
 <details>
-    <summary>Examples</summary>
+    <summary>Examples:</summary>
     Login and register <br>
     <img width="75%" alt="login" title="login" src="assets/login_petset.png"><br>
     Main product page with pagination <br>
@@ -20,3 +20,7 @@ project by Ruslan Liakhovets
     <img width="75%" alt="404 page" title="404 page" src="assets/404_product.png"><br>
 
 </details>
+
+# For deployment
+
+### File petset.sql contains sql requests for creating needed database
